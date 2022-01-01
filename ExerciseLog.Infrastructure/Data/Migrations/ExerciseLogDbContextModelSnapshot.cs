@@ -38,13 +38,16 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     b.Property<bool>("ExtraWeight")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MeasuredBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("Month")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalReps")
+                    b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
                     b.Property<int>("TraineeId")

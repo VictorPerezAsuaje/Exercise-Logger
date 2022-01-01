@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExerciseLog.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ExerciseLogDbContext))]
-    [Migration("20220101190947_InitialMigration")]
+    [Migration("20220101193125_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,13 +40,16 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     b.Property<bool>("ExtraWeight")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MeasuredBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("Month")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalReps")
+                    b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
                     b.Property<int>("TraineeId")

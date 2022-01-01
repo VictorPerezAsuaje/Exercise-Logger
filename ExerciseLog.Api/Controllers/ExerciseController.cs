@@ -32,7 +32,7 @@ namespace ExerciseLog.Api.Controllers
                     Name = newExerciseDTO.Name,
                     ExtraWeight = newExerciseDTO.ExtraWeight,
                     AddedWeight = newExerciseDTO.AddedWeight,
-                    TotalReps = newExerciseDTO.TotalReps,
+                    TotalAmount = newExerciseDTO.TotalAmount,
                     TraineeId = newExerciseDTO.TraineeId
                 };
 
@@ -60,8 +60,9 @@ namespace ExerciseLog.Api.Controllers
                     AddedWeight = exerciseItem.AddedWeight,
                     ExtraWeight = exerciseItem.ExtraWeight,
                     ExerciseDate = exerciseItem.ExerciseDate,
-                    TotalReps = exerciseItem.TotalReps,
-                    TraineeName = exerciseItem.Trainee.TraineeName
+                    TotalAmount = exerciseItem.TotalAmount,
+                    TraineeName = exerciseItem.Trainee.TraineeName,
+                    Status = statusOperacion.ResultWas(StatusResult.Correct)
                 });
             });
 
@@ -77,6 +78,9 @@ namespace ExerciseLog.Api.Controllers
 
             Exercise exerciseItem = await _ExerciseRepository.GetById(id);
 
+            if(exerciseItem == null) return new ExerciseGetDTO() { 
+                Status = statusOperacion.ResultWas(StatusResult.Error).WithMessage("There is not an exercise with that Id.") };
+
             return new ExerciseGetDTO()
             {
                 Id = exerciseItem.Id,
@@ -84,8 +88,9 @@ namespace ExerciseLog.Api.Controllers
                 AddedWeight = exerciseItem.AddedWeight,
                 ExtraWeight = exerciseItem.ExtraWeight,
                 ExerciseDate = exerciseItem.ExerciseDate,
-                TotalReps = exerciseItem.TotalReps,
-                TraineeName = exerciseItem.Trainee.TraineeName
+                TotalAmount = exerciseItem.TotalAmount,
+                TraineeName = exerciseItem.Trainee.TraineeName,
+                Status = statusOperacion.ResultWas(StatusResult.Correct)
             };
         }
 
@@ -100,10 +105,10 @@ namespace ExerciseLog.Api.Controllers
             Exercise Exercise = await _ExerciseRepository.GetById(id);
 
             if (Exercise == null) 
-                return statusOperacion.ResultWas(StatusResult.Error).WithMessage("Exercise was not updated, please there is not Exercise with that Id.");
+                return statusOperacion.ResultWas(StatusResult.Error).WithMessage("Exercise was not updated, there is not Exercise with that Id.");
 
             Exercise.Name = newExerciseDTO.Name;
-            Exercise.TotalReps = newExerciseDTO.TotalReps;
+            Exercise.TotalAmount = newExerciseDTO.TotalAmount;
             Exercise.AddedWeight = newExerciseDTO.AddedWeight;
             Exercise.ExtraWeight = newExerciseDTO.ExtraWeight;
             Exercise.TraineeId = newExerciseDTO.TraineeId;

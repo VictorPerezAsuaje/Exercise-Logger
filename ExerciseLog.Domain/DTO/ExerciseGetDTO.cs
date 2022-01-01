@@ -1,4 +1,5 @@
 ﻿using ExerciseLog.Domain.EntidadesAuxiliares;
+using ExerciseLog.Domain.Entities;
 using System;
 
 namespace ExerciseLog.Domain.DTO
@@ -9,8 +10,10 @@ namespace ExerciseLog.Domain.DTO
         public string Name { get; set; }
         public bool ExtraWeight { get; set; }
         public int AddedWeight { get; set; }
-        public int TotalReps { get; set; }
+        public MeasuredBy MeasuredBy { get; set; }
+        public int TotalAmount { get; set; }
         public DateTime ExerciseDate { get; set; }
         public string TraineeName { get; set; }
+        public Status Status { get; set; }
     }
 }
