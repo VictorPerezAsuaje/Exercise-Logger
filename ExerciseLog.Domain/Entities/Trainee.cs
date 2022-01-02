@@ -18,7 +18,8 @@ namespace ExerciseLog.Domain.Entities
         public int Age { get; private set; }
         public Gender Gender { get; private set; }
         public DateTime DateOfBirth { get; private set; }
-        public List<Exercise> ExerciseRecord { get; set; } = new List<Exercise>();
+        public List<CalisthenicExercise> CalistenicExercises { get; set; } = new List<CalisthenicExercise>();
+        public List<DistanceExercise> DistanceExercises { get; set; } = new List<DistanceExercise>();
 
         public Trainee()
         {

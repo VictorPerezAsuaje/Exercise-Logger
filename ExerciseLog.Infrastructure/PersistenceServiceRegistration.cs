@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ExerciseLog.Infrastructure.Data;
 using ExerciseLog.Infrastructure.Interfaces;
 using ExerciseLog.Infrastructure.Repositories;
+using ExerciseLog.Domain.Entities;
 
 namespace ExerciseLog.Infrastructure
 {
@@ -14,7 +15,9 @@ namespace ExerciseLog.Infrastructure
             services.AddDbContext<ExerciseLogDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            services.AddScoped<IExerciseRepository<DistanceExercise>, DistanceExerciseRepository>();
+            services.AddScoped<IExerciseRepository<CalisthenicExercise>, CalisthenicExerciseRepository>();
+            services.AddScoped<IReadOnlyExerciseRepository<Exercise>, ExerciseRepository>();
 
             return services;
         }

@@ -4,14 +4,16 @@ using ExerciseLog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExerciseLog.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ExerciseLogDbContext))]
-    partial class ExerciseLogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220101224013_AddedBaseExercise")]
+    partial class AddedBaseExercise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

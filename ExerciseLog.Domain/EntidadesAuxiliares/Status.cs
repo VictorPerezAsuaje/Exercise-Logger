@@ -9,8 +9,8 @@ namespace ExerciseLog.Domain.EntidadesAuxiliares
     public enum StatusResult { Error, Correct }
     public class Status
     {
-        private StatusResult StatusResult { get;  set; }
-        private string Message { get; set; }
+        public StatusResult StatusResult { get; private set; }
+        public string Message { get; private set; }
 
         public Status ResultWas(StatusResult result)
         {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExerciseLog.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ExerciseLogDbContext))]
-    [Migration("20220101193125_InitialMigration")]
+    [Migration("20220101223007_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ExerciseLog.Domain.Entities.Exercise", b =>
+            modelBuilder.Entity("ExerciseLog.Domain.Entities.CalisthenicExercise", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,9 +29,6 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AddedWeight")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Day")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ExerciseDate")
@@ -43,9 +40,6 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     b.Property<int>("MeasuredBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("Month")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -55,14 +49,46 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     b.Property<int>("TraineeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Year")
+                    b.HasKey("Id");
+
+                    b.HasIndex("TraineeId");
+
+                    b.ToTable("CalisthenicExercises");
+                });
+
+            modelBuilder.Entity("ExerciseLog.Domain.Entities.DistanceExercise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddedWeight")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExerciseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("ExtraWeight")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Meters")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Time")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TraineeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("DistanceExercises");
                 });
 
             modelBuilder.Entity("ExerciseLog.Domain.Entities.Trainee", b =>
@@ -89,10 +115,21 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     b.ToTable("Trainees");
                 });
 
-            modelBuilder.Entity("ExerciseLog.Domain.Entities.Exercise", b =>
+            modelBuilder.Entity("ExerciseLog.Domain.Entities.CalisthenicExercise", b =>
                 {
                     b.HasOne("ExerciseLog.Domain.Entities.Trainee", "Trainee")
-                        .WithMany("ExerciseRecord")
+                        .WithMany("CalistenicExercises")
+                        .HasForeignKey("TraineeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainee");
+                });
+
+            modelBuilder.Entity("ExerciseLog.Domain.Entities.DistanceExercise", b =>
+                {
+                    b.HasOne("ExerciseLog.Domain.Entities.Trainee", "Trainee")
+                        .WithMany("DistanceExercises")
                         .HasForeignKey("TraineeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -102,7 +139,9 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ExerciseLog.Domain.Entities.Trainee", b =>
                 {
-                    b.Navigation("ExerciseRecord");
+                    b.Navigation("CalistenicExercises");
+
+                    b.Navigation("DistanceExercises");
                 });
 #pragma warning restore 612, 618
         }

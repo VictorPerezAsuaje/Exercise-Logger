@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExerciseLog.Infrastructure.Interfaces
 {
-    public interface IExerciseRepository<T> 
+    public interface IReadOnlyExerciseRepository<T> 
     {
         Task<T> GetById(int id);
+        Task<IEnumerable<T>> GetByName(string name);
         Task<List<T>> GetAll();
-        Task<Status> DeleteAsync(int id);
-        Status Add(T entity);
-        Status Update(T entity);
     }
 }

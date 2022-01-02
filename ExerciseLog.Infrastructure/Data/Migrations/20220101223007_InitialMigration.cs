@@ -24,7 +24,7 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Exercises",
+                name: "CalisthenicExercises",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -32,19 +32,41 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExtraWeight = table.Column<bool>(type: "bit", nullable: false),
                     AddedWeight = table.Column<int>(type: "int", nullable: false),
-                    MeasuredBy = table.Column<int>(type: "int", nullable: false),
-                    TotalAmount = table.Column<int>(type: "int", nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Month = table.Column<int>(type: "int", nullable: false),
-                    Day = table.Column<int>(type: "int", nullable: false),
                     ExerciseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TraineeId = table.Column<int>(type: "int", nullable: false)
+                    TraineeId = table.Column<int>(type: "int", nullable: false),
+                    MeasuredBy = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.PrimaryKey("PK_CalisthenicExercises", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Exercises_Trainees_TraineeId",
+                        name: "FK_CalisthenicExercises_Trainees_TraineeId",
+                        column: x => x.TraineeId,
+                        principalTable: "Trainees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DistanceExercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExtraWeight = table.Column<bool>(type: "bit", nullable: false),
+                    AddedWeight = table.Column<int>(type: "int", nullable: false),
+                    ExerciseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TraineeId = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<int>(type: "int", nullable: false),
+                    Meters = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DistanceExercises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DistanceExercises_Trainees_TraineeId",
                         column: x => x.TraineeId,
                         principalTable: "Trainees",
                         principalColumn: "Id",
@@ -52,15 +74,23 @@ namespace ExerciseLog.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Exercises_TraineeId",
-                table: "Exercises",
+                name: "IX_CalisthenicExercises_TraineeId",
+                table: "CalisthenicExercises",
+                column: "TraineeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DistanceExercises_TraineeId",
+                table: "DistanceExercises",
                 column: "TraineeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Exercises");
+                name: "CalisthenicExercises");
+
+            migrationBuilder.DropTable(
+                name: "DistanceExercises");
 
             migrationBuilder.DropTable(
                 name: "Trainees");
