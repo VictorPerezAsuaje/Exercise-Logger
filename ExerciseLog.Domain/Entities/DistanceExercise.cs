@@ -16,7 +16,9 @@ namespace ExerciseLog.Domain.Entities
         public DateTime ExerciseDate { get; set; }
         public int TraineeId { get; set; }
         public Trainee Trainee { get; set; }
-        public int Time { get; set; }
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
         public int Meters { get; set; }
 
         public DistanceExercise()

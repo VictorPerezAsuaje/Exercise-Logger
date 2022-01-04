@@ -11,5 +11,7 @@ namespace ExerciseLog.Domain.Entities
     {
         public string Name { get; set; }
         public DifficultyLevel Difficulty { get; set; }
+        public virtual CalisthenicExercise CalisthenicExercise { get; set; }
+        public virtual DistanceExercise DistanceExercise { get; set; }
     }
 }

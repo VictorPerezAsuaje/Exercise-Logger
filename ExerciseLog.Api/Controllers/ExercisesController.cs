@@ -14,12 +14,11 @@ namespace ExerciseLog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExerciseController : ControllerBase
+    public class ExercisesController : ControllerBase
     {
-        private readonly IReadOnlyExerciseRepository<Exercise> _exerciseRepository;
-        private Status statusOperacion = new Status();
+        private readonly IReadOnlyRepository<Exercise> _exerciseRepository;
 
-        public ExerciseController(IReadOnlyExerciseRepository<Exercise> ExerciseRepository
+        public ExercisesController(IReadOnlyRepository<Exercise> ExerciseRepository
             , ExerciseLogDbContext context)
         {
             _exerciseRepository = ExerciseRepository;
@@ -36,23 +35,23 @@ namespace ExerciseLog.Api.Controllers
 
         // GET api/<ExerciseController>/5
         [HttpGet]
-        [Route("GetById/{id}")]
+        [Route("{id}")]
         public async Task<Exercise> GetById(int id) 
         {
-            if (id < 1) 
+            if (id < 1)
                 return null;
 
             return await _exerciseRepository.GetById(id);
         }
 
         // GET api/<ExerciseController>/name
-        [HttpGet("GetByName/{name}")]
-        public async Task<IEnumerable<Exercise>> GetByName(string name)
+        [HttpGet("Name/{name}")]
+        public Exercise GetByName(string name)
         {
             if (name.Trim() == "")
                 return null;
 
-            return await _exerciseRepository.GetByName(name);
+            return _exerciseRepository.GetByName(name);
         }
     }
 }

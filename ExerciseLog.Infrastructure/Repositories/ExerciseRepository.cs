@@ -12,10 +12,9 @@ using System.Threading.Tasks;
 
 namespace ExerciseLog.Infrastructure.Repositories
 {
-    public class ExerciseRepository : IReadOnlyExerciseRepository<Exercise>
+    public class ExerciseRepository : IReadOnlyRepository<Exercise>
     {
         private readonly ExerciseLogDbContext _context;
-        private readonly Status _status = new Status();
 
         public ExerciseRepository(ExerciseLogDbContext context)
         {
@@ -38,14 +37,8 @@ namespace ExerciseLog.Infrastructure.Repositories
             return exercise;
         }
 
-        public async Task<IEnumerable<Exercise>> GetByName(string name)
-        {
-
-            List<Exercise> exercise = await _context.Exercises
-                .Where(m => m.Name.ToLower() == name.ToLower() || m.Name.ToLower().Contains(name))
-                .ToListAsync();
-
-            return exercise;
-        }
+        public Exercise GetByName(string name) => _context.Exercises
+                .Where(m => m.Name.ToLower() == name.ToLower())
+                .FirstOrDefault();
     }
 }

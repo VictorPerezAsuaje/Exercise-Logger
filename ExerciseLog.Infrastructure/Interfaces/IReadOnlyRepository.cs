@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExerciseLog.Infrastructure.Interfaces
 {
-    public interface IReadOnlyExerciseRepository<T> 
+    public interface IReadOnlyRepository<T> 
     {
         Task<T> GetById(int id);
-        Task<IEnumerable<T>> GetByName(string name);
+        T GetByName(string name);
         Task<List<T>> GetAll();
     }
 }

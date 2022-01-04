@@ -14,17 +14,17 @@ namespace ExerciseLog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CalisthenicExerciseController : ControllerBase
+    public class CalisthenicsRecordsController : ControllerBase
     {
-        private readonly ExerciseLogDbContext _context;
-        private readonly IExerciseRepository<CalisthenicExercise> _ExerciseRepository;
+        private readonly IExerciseRepository<CalisthenicExercise> _calisthenicRepository;
+        private readonly IReadOnlyRepository<Exercise> _exerciseRepository;
         private Status statusOperacion = new Status();
 
-        public CalisthenicExerciseController(IExerciseRepository<CalisthenicExercise> ExerciseRepository
-            , ExerciseLogDbContext context)
+        public CalisthenicsRecordsController(IExerciseRepository<CalisthenicExercise> calisthenicRepository
+            , IReadOnlyRepository<Exercise> exerciseRepository)
         {
-            _ExerciseRepository = ExerciseRepository;
-            _context = context;
+            _calisthenicRepository = calisthenicRepository;
+            _exerciseRepository = exerciseRepository;
         }
         // POST api/<ExerciseController>
         [HttpPost]
@@ -32,15 +32,14 @@ namespace ExerciseLog.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                Exercise exercise = _context.Exercises
-                    .Where(e => e.Name.ToLower() == newExerciseDTO.ExerciseName.ToLower())
-                    .FirstOrDefault();
+                Exercise exercise = _exerciseRepository.GetByName(newExerciseDTO.ExerciseName);
 
                 if (exercise == null)
                     return statusOperacion.ResultWas(StatusResult.Error).WithMessage("There's no exercise with that name.");
 
                 CalisthenicExercise calisthenicExercise = new CalisthenicExercise()
                 {
+                    ExerciseId = exercise.Id,
                     Exercise = exercise,
                     ExtraWeight = newExerciseDTO.ExtraWeight,
                     AddedWeight = newExerciseDTO.AddedWeight,
@@ -48,7 +47,7 @@ namespace ExerciseLog.Api.Controllers
                     TraineeId = newExerciseDTO.TraineeId
                 };
 
-                return _ExerciseRepository.Add(calisthenicExercise);
+                return _calisthenicRepository.Add(calisthenicExercise);
             }
 
             return statusOperacion
@@ -60,15 +59,16 @@ namespace ExerciseLog.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<ExerciseGetDTO>> Get()
         {
-            List<CalisthenicExercise> exerciseList = await _ExerciseRepository.GetAll();
+            List<CalisthenicExercise> exerciseList = await _calisthenicRepository.GetAll();
             List<ExerciseGetDTO> exerciseGetDTO = new List<ExerciseGetDTO>();
 
-            exerciseList?.ForEach(exerciseItem =>
+            exerciseList.ForEach(async exerciseItem =>
             {
+
                 exerciseGetDTO.Add(new CalisthenicExerciseGetDTO()
                 {
                     Id = exerciseItem.Id,
-                    ExerciseName = exerciseItem.Exercise.Name,
+                    ExerciseName = exerciseItem.Exercise != null ? exerciseItem.Exercise.Name : (await _exerciseRepository.GetById(exerciseItem.ExerciseId)).Name,
                     AddedWeight = exerciseItem.AddedWeight,
                     ExtraWeight = exerciseItem.ExtraWeight,
                     ExerciseDate = exerciseItem.ExerciseDate,
@@ -88,7 +88,7 @@ namespace ExerciseLog.Api.Controllers
             if (id < 1) 
                 return null;
 
-            CalisthenicExercise exerciseItem = await _ExerciseRepository.GetById(id);
+            CalisthenicExercise exerciseItem = await _calisthenicRepository.GetById(id);
 
             if(exerciseItem == null) return new CalisthenicExerciseGetDTO() { 
                 Status = statusOperacion.ResultWas(StatusResult.Error).WithMessage("There is not an exercise with that Id.") };
@@ -114,14 +114,13 @@ namespace ExerciseLog.Api.Controllers
 
             if (newExerciseDTO == null) return statusOperacion.ResultWas(StatusResult.Error).WithMessage("Exercise was not created, please check all required elements.");
 
-            CalisthenicExercise calisthenicExercise = await _ExerciseRepository.GetById(id);
+            CalisthenicExercise calisthenicExercise = await _calisthenicRepository.GetById(id);
 
             if (calisthenicExercise == null) 
                 return statusOperacion.ResultWas(StatusResult.Error).WithMessage("Exercise was not updated, there is not Exercise with that Id.");
 
-            Exercise exercise = _context.Exercises
-                .Where(e => e.Name.ToLower() == newExerciseDTO.ExerciseName.ToLower())
-                .FirstOrDefault();
+            Exercise exercise = _exerciseRepository.GetByName(newExerciseDTO.ExerciseName);
+
 
             if (exercise == null)
                 return statusOperacion.ResultWas(StatusResult.Error).WithMessage("There's no exercise with that name.");
@@ -132,7 +131,7 @@ namespace ExerciseLog.Api.Controllers
             calisthenicExercise.ExtraWeight = newExerciseDTO.ExtraWeight;
             calisthenicExercise.TraineeId = newExerciseDTO.TraineeId;
 
-            return _ExerciseRepository.Update(calisthenicExercise);
+            return _calisthenicRepository.Update(calisthenicExercise);
         }
 
         // DELETE api/<ExerciseController>/5
@@ -142,7 +141,7 @@ namespace ExerciseLog.Api.Controllers
             if (id < 1)
                 return statusOperacion.ResultWas(StatusResult.Error).WithMessage("Id can not be lower than 1");
 
-            return await _ExerciseRepository.DeleteAsync(id);             
+            return await _calisthenicRepository.DeleteAsync(id);             
         }
     }
 }

@@ -11,6 +11,7 @@ namespace ExerciseLog.Domain.Entities
 
     public class CalisthenicExercise : BaseEntity, IExerciseItem
     {
+        public int ExerciseId { get; set; }
         public Exercise Exercise { get; set; }
         public bool ExtraWeight { get; set; }
         public int AddedWeight { get; set; }

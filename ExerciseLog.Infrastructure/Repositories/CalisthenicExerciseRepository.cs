@@ -54,12 +54,10 @@ namespace ExerciseLog.Infrastructure.Repositories
             return _status.ResultWas(StatusResult.Correct);
         }
 
-        public async Task<List<CalisthenicExercise>> GetAll()
-        {
-            List<CalisthenicExercise> exerciseList = await _context.CalisthenicExercises.Include(m => m.Exercise).Include(m => m.Trainee)?.ToListAsync();
+        public async Task<List<CalisthenicExercise>> GetAll() => 
+            await _context.CalisthenicExercises.Include(m => m.Trainee).Include(m => m.Exercise).ToListAsync();
 
-            return exerciseList;
-        }
+        
 
         public async Task<CalisthenicExercise> GetById(int id)
         {

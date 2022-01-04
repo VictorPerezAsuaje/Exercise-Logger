@@ -17,7 +17,8 @@ namespace ExerciseLog.Infrastructure
 
             services.AddScoped<IExerciseRepository<DistanceExercise>, DistanceExerciseRepository>();
             services.AddScoped<IExerciseRepository<CalisthenicExercise>, CalisthenicExerciseRepository>();
-            services.AddScoped<IReadOnlyExerciseRepository<Exercise>, ExerciseRepository>();
+            services.AddScoped<IReadOnlyRepository<Exercise>, ExerciseRepository>();
+            services.AddScoped<IReadOnlyRepository<Trainee>, TraineeRepository>();
 
             return services;
         }

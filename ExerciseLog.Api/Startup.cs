@@ -22,6 +22,10 @@ namespace ExerciseLog.Api
         {
 
             services.AddControllers();
+            //    .AddNewtonsoftJson(options =>
+            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //); 
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExerciseLog.Api", Version = "v1" });

@@ -24,16 +24,27 @@ namespace ExerciseLog.Infrastructure.Data
             modelBuilder.Entity<CalisthenicExercise>().HasKey(ce => ce.Id);
             modelBuilder.Entity<CalisthenicExercise>()
                 .HasOne(ce => ce.Trainee).WithMany(t => t.CalistenicExercises);
+            modelBuilder.Entity<CalisthenicExercise>()
+                .HasOne(ce => ce.Exercise)
+                .WithOne(e => e.CalisthenicExercise)
+                .HasForeignKey<CalisthenicExercise>(ce => ce.ExerciseId);
 
             modelBuilder.Entity<DistanceExercise>().HasKey(de => de.Id);
             modelBuilder.Entity<DistanceExercise>()
                 .HasOne(de => de.Trainee).WithMany(t => t.DistanceExercises);
+            modelBuilder.Entity<DistanceExercise>()
+                .HasOne(de => de.Exercise)
+                .WithOne(e => e.DistanceExercise)
+                .HasForeignKey<DistanceExercise>(de => de.Id); ;
 
             modelBuilder.Entity<Trainee>().HasKey(t => t.Id);
             modelBuilder.Entity<Trainee>()
-                .HasMany(e => e.CalistenicExercises).WithOne(t => t.Trainee);
+                .HasMany(e => e.CalistenicExercises)
+                .WithOne(t => t.Trainee);
             modelBuilder.Entity<Trainee>()
-                .HasMany(e => e.DistanceExercises).WithOne(t => t.Trainee);
+                .HasMany(e => e.DistanceExercises)
+                .WithOne(t => t.Trainee);
+            
         } 
     }
 }

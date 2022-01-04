@@ -14,13 +14,13 @@ namespace ExerciseLog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DistanceExerciseController : ControllerBase
+    public class CardioRecordsController : ControllerBase
     {
         private readonly ExerciseLogDbContext _context;
         private readonly IExerciseRepository<DistanceExercise> _ExerciseRepository;
         private Status statusOperacion = new Status();
 
-        public DistanceExerciseController(IExerciseRepository<DistanceExercise> ExerciseRepository
+        public CardioRecordsController(IExerciseRepository<DistanceExercise> ExerciseRepository
             , ExerciseLogDbContext context)
         {
             _ExerciseRepository = ExerciseRepository;
@@ -45,8 +45,10 @@ namespace ExerciseLog.Api.Controllers
                     ExtraWeight = newExerciseDTO.ExtraWeight,
                     AddedWeight = newExerciseDTO.AddedWeight,
                     Meters = newExerciseDTO.Meters,
-                    Time = newExerciseDTO.Time,
                     TraineeId = newExerciseDTO.TraineeId,
+                    Hours = newExerciseDTO.Hours,
+                    Minutes = newExerciseDTO.Minutes,
+                    Seconds = newExerciseDTO.Seconds
                 };
 
                 return _ExerciseRepository.Add(distanceExercise);
@@ -73,7 +75,9 @@ namespace ExerciseLog.Api.Controllers
                     AddedWeight = exerciseItem.AddedWeight,
                     ExtraWeight = exerciseItem.ExtraWeight,
                     Meters = exerciseItem.Meters,
-                    Time = exerciseItem.Time,
+                    Hours = exerciseItem.Hours,
+                    Minutes = exerciseItem.Minutes,
+                    Seconds = exerciseItem.Seconds,
                     TraineeName = exerciseItem.Trainee.TraineeName,
                     Status = statusOperacion.ResultWas(StatusResult.Correct)
                 });
@@ -92,7 +96,8 @@ namespace ExerciseLog.Api.Controllers
             DistanceExercise exerciseItem = await _ExerciseRepository.GetById(id);
 
             if(exerciseItem == null) return new DistanceExerciseGetDTO() { 
-                Status = statusOperacion.ResultWas(StatusResult.Error).WithMessage("There is not an exercise with that Id.") };
+                Status = statusOperacion.ResultWas(StatusResult.Error).WithMessage("There is not an exercise with that Id.") 
+            };
 
             return new DistanceExerciseGetDTO()
             {
@@ -102,7 +107,9 @@ namespace ExerciseLog.Api.Controllers
                 ExtraWeight = exerciseItem.ExtraWeight,
                 ExerciseDate = exerciseItem.ExerciseDate,
                 Meters = exerciseItem.Meters,
-                Time = exerciseItem.Time,
+                Hours = exerciseItem.Hours,
+                Minutes = exerciseItem.Minutes,
+                Seconds = exerciseItem.Seconds,
                 TraineeName = exerciseItem.Trainee.TraineeName,
                 Status = statusOperacion.ResultWas(StatusResult.Correct)
             };
@@ -130,10 +137,12 @@ namespace ExerciseLog.Api.Controllers
 
             distanceExercise.Exercise = exercise;
             distanceExercise.Meters = newExerciseDTO.Meters;
-            distanceExercise.Time = newExerciseDTO.Time;
             distanceExercise.AddedWeight = newExerciseDTO.AddedWeight;
             distanceExercise.ExtraWeight = newExerciseDTO.ExtraWeight;
             distanceExercise.TraineeId = newExerciseDTO.TraineeId;
+            distanceExercise.Hours = newExerciseDTO.Hours;
+            distanceExercise.Minutes = newExerciseDTO.Minutes;
+            distanceExercise.Seconds = newExerciseDTO.Seconds;
 
             return _ExerciseRepository.Update(distanceExercise);
         }
